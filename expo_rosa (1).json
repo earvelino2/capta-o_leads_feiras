@@ -1,0 +1,1293 @@
+{
+  "name": "expo_rosa",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webhook-expo",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "33395809-a105-4449-9a22-e5a608d6f442",
+      "name": "Webhook Entrada",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2352,
+        880
+      ],
+      "webhookId": "9185ec3f-c755-4158-aeea-128415a413d6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-event",
+              "leftValue": "={{ $json.body.messages[0].message_type }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "156cab2f-03d1-4b8a-be46-bb50b17bf405",
+              "leftValue": "={{ $json.body.labels.includes('exporosa') }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "d8183d1e-600e-4c44-b6f0-818a85e0bc73",
+      "name": "IF: mensagem do cliente?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2080,
+        880
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('get').item.json.estado }}",
+                    "rightValue": "lead_novo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f380033e-2894-4f46-bbdd-3dc6d831393d"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.estado }}",
+                    "rightValue": "aguardando_provedor",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "9ae0ac48-7ee3-4c30-9612-4ed7d002df03"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.estado }}",
+                    "rightValue": "aguardando_download",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8e11407b-649d-4344-8410-7ca67cfa0b46"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.estado }}",
+                    "rightValue": "aguardando_upload",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "233d5c59-bc82-4f3a-b7a0-c14188a29225"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "0afd0188-74c3-49a9-94d8-498384527b35",
+      "name": "Switch Estado",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -1424,
+        816
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "IfglR6ZMao6MdJPP",
+          "mode": "list",
+          "cachedResultName": "leads_expo",
+          "cachedResultUrl": "/projects/P1y2pXT9SlRLoR1D/datatables/IfglR6ZMao6MdJPP"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_id",
+              "keyValue": "={{ Number($json.body.messages[0].conversation_id) }}"
+            },
+            {
+              "keyName": "estado",
+              "keyValue": "aguardando_nome"
+            }
+          ]
+        }
+      },
+      "id": "625b2871-7a9c-4396-8b58-db8fdc383ee8",
+      "name": "get",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1856,
+        864
+      ],
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "IfglR6ZMao6MdJPP",
+          "mode": "list",
+          "cachedResultName": "leads_expo",
+          "cachedResultUrl": "/projects/P1y2pXT9SlRLoR1D/datatables/IfglR6ZMao6MdJPP"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_id": "={{ Number($('Webhook Entrada').item.json.body.messages[0].conversation_id) }}",
+            "estado": "lead_novo",
+            "telefone": "={{ $('Webhook Entrada').item.json.body.messages[0].sender.phone_number }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nome_lead",
+              "displayName": "nome_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "provedor_atual",
+              "displayName": "provedor_atual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_download",
+              "displayName": "palpite_download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_upload",
+              "displayName": "palpite_upload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -1360,
+        1152
+      ],
+      "id": "7328b631-8365-4d96-9e01-5eb3138a08cc",
+      "name": "lead_novo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot:3009/api/v1/accounts/2/conversations/{{ $json.conversation_id }}/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=🌟 Oláaa! Que alegria ter você aqui com a gente! 😄✨\nVocê está a poucos passos de concorrer a 1 ANO DE INTERNET GRÁTIS! 🤯🎁💙\nResponda rapidinho e garanta sua participação nesse super sorteio da Opção Telecom! 🚀\n\n📝 1️⃣ Qual o seu nome completo? 😄✍️"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -1200,
+        1152
+      ],
+      "id": "0faf58aa-eac4-47e4-a07b-f201b2bb6ae9",
+      "name": "pergunta_nome",
+      "credentials": {
+        "chatwootApi": {
+          "id": "efTPoR27FBNubZJa",
+          "name": "ChatWoot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot:3009/api/v1/accounts/2/conversations/{{ $json.conversation_id }}/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "🏙️ 2️⃣ Qual cidade você mora? 📍😊"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -624,
+        640
+      ],
+      "id": "b7a7ad6f-bd6c-47a7-9889-4a81f27a31f3",
+      "name": "pergunta_cidade",
+      "credentials": {
+        "chatwootApi": {
+          "id": "efTPoR27FBNubZJa",
+          "name": "ChatWoot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot:3009/api/v1/accounts/2/conversations/{{ $json.conversation_id }}/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "🌐 3️⃣ Qual é o seu provedor de internet? 📡👀"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -624,
+        832
+      ],
+      "id": "62e38141-9dae-4124-8656-9fe62c14d9ac",
+      "name": "pergunta_provedor",
+      "credentials": {
+        "chatwootApi": {
+          "id": "efTPoR27FBNubZJa",
+          "name": "ChatWoot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot:3009/api/v1/accounts/2/conversations/{{ $json.conversation_id }}/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "⚡ 4️⃣ Qual o seu palpite de velocidade de Download e Upload? 🤣📊💨"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -624,
+        1008
+      ],
+      "id": "d399646d-7cac-4f01-b196-e38e14562a63",
+      "name": "pergunta_download",
+      "credentials": {
+        "chatwootApi": {
+          "id": "efTPoR27FBNubZJa",
+          "name": "ChatWoot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3fff0ecf-b8bd-474b-9939-56a39209cf03",
+              "leftValue": "={{ $json.conversation_id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1632,
+        864
+      ],
+      "id": "88948b04-c10e-4e18-bab2-448a663583eb",
+      "name": "If_valida_lead_novo"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://chatwoot:3009/api/v1/accounts/2/conversations/{{ $json.conversation_id }}/messages",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "chatwootApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=💗🌹 Que bom ter você com a gente na Expo Rosa 2026! 🎉🌹\n\nSeu cadastro foi concluído com sucesso! ✅✨\nAgora é oficial: você já está participando do nosso sorteio de *1 ANO DE INTERNET GRÁTIS!* 🤯🎁📡\n\nFique de olho… o próximo sortudo pode ser você! 👀💙\n\nBoa sorte! 🍀🤞"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -624,
+        1168
+      ],
+      "id": "e796112e-831c-43db-840d-db9cde75c4c7",
+      "name": "finaliza",
+      "credentials": {
+        "chatwootApi": {
+          "id": "efTPoR27FBNubZJa",
+          "name": "ChatWoot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "IfglR6ZMao6MdJPP",
+          "mode": "list",
+          "cachedResultName": "leads_expo",
+          "cachedResultUrl": "/projects/P1y2pXT9SlRLoR1D/datatables/IfglR6ZMao6MdJPP"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_id",
+              "keyValue": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_id": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}",
+            "estado": "aguardando_provedor",
+            "nome_lead": "={{ $('IF: mensagem do cliente?').item.json.body.messages[0].content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nome_lead",
+              "displayName": "nome_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "provedor_atual",
+              "displayName": "provedor_atual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_download",
+              "displayName": "palpite_download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_upload",
+              "displayName": "palpite_upload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -928,
+        640
+      ],
+      "id": "f04b349b-9811-42b8-9c7c-0d1922982c8f",
+      "name": "update_nome"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "IfglR6ZMao6MdJPP",
+          "mode": "list",
+          "cachedResultName": "leads_expo",
+          "cachedResultUrl": "/projects/P1y2pXT9SlRLoR1D/datatables/IfglR6ZMao6MdJPP"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_id",
+              "keyValue": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_id": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}",
+            "estado": "aguardando_download",
+            "cidade": "={{ $('IF: mensagem do cliente?').item.json.body.messages[0].content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nome_lead",
+              "displayName": "nome_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "provedor_atual",
+              "displayName": "provedor_atual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_download",
+              "displayName": "palpite_download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_upload",
+              "displayName": "palpite_upload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -928,
+        832
+      ],
+      "id": "d21d5d23-1764-49e1-a648-ab7828631511",
+      "name": "Update cidade"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "IfglR6ZMao6MdJPP",
+          "mode": "list",
+          "cachedResultName": "leads_expo",
+          "cachedResultUrl": "/projects/P1y2pXT9SlRLoR1D/datatables/IfglR6ZMao6MdJPP"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_id",
+              "keyValue": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_id": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}",
+            "estado": "aguardando_upload",
+            "provedor_atual": "={{ $('Webhook Entrada').item.json.body.messages[0].content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nome_lead",
+              "displayName": "nome_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "provedor_atual",
+              "displayName": "provedor_atual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "palpite_download",
+              "displayName": "palpite_download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_upload",
+              "displayName": "palpite_upload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "telefone",
+              "displayName": "telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -928,
+        1008
+      ],
+      "id": "f580707d-3759-4f6a-b0f5-77c8553fdbb2",
+      "name": "Update provedor"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "IfglR6ZMao6MdJPP",
+          "mode": "list",
+          "cachedResultName": "leads_expo",
+          "cachedResultUrl": "/projects/P1y2pXT9SlRLoR1D/datatables/IfglR6ZMao6MdJPP"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "conversation_id",
+              "keyValue": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "conversation_id": "={{ $('Webhook Entrada').item.json.body.messages[0].conversation_id }}",
+            "estado": "palpite_download_upload",
+            "palpite_download": "={{ $('IF: mensagem do cliente?').item.json.body.messages[0].content }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversation_id",
+              "displayName": "conversation_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nome_lead",
+              "displayName": "nome_lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "cidade",
+              "displayName": "cidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "provedor_atual",
+              "displayName": "provedor_atual",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "palpite_download",
+              "displayName": "palpite_download",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "palpite_upload",
+              "displayName": "palpite_upload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        -912,
+        1168
+      ],
+      "id": "2d3da7ab-ff03-4119-93c4-9c8ce084040f",
+      "name": "Update palpite"
+    }
+  ],
+  "pinData": {
+    "Webhook Entrada": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.opcaotelecom.net.br",
+            "x-forwarded-scheme": "https",
+            "x-forwarded-proto": "https",
+            "x-forwarded-for": "192.168.153.226",
+            "x-real-ip": "192.168.153.226",
+            "content-length": "3407",
+            "accept": "application/json",
+            "user-agent": "rest-client/2.1.0 (linux-musl x86_64) ruby/3.4.4p34",
+            "content-type": "application/json",
+            "accept-encoding": "gzip;q=1.0,deflate;q=0.6,identity;q=0.3"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "additional_attributes": {},
+            "can_reply": true,
+            "channel": "Channel::Api",
+            "contact_inbox": {
+              "id": 50104,
+              "contact_id": 27746,
+              "inbox_id": 37,
+              "source_id": "88c98adf-196e-482a-a95d-9c0d6e5cb754",
+              "created_at": "2026-04-23T17:03:24.150Z",
+              "updated_at": "2026-04-23T17:03:24.150Z",
+              "hmac_verified": false,
+              "pubsub_token": "ETH3aFi9GYWoRYGg8AcbPXGk"
+            },
+            "id": 69822,
+            "inbox_id": 37,
+            "messages": [
+              {
+                "id": 3389427,
+                "content": "200 e 200",
+                "account_id": 2,
+                "inbox_id": 37,
+                "conversation_id": 69822,
+                "message_type": 0,
+                "created_at": 1776968651,
+                "updated_at": "2026-04-23T18:24:11.571Z",
+                "private": false,
+                "status": "sent",
+                "source_id": null,
+                "content_type": "text",
+                "content_attributes": {},
+                "sender_type": "Contact",
+                "sender_id": 27746,
+                "external_source_ids": {},
+                "additional_attributes": {},
+                "processed_message_content": "200 e 200",
+                "sentiment": {},
+                "conversation": {
+                  "assignee_id": null,
+                  "unread_count": 10,
+                  "last_activity_at": 1776968651,
+                  "contact_inbox": {
+                    "source_id": "88c98adf-196e-482a-a95d-9c0d6e5cb754"
+                  }
+                },
+                "sender": {
+                  "additional_attributes": {
+                    "city": "",
+                    "country": "",
+                    "description": "",
+                    "company_name": "",
+                    "country_code": "",
+                    "avatar_url_hash": "fff7601dff6da6fb082e043b8abc5c0b5f58041f088026e0f8272a13ea6aaa87",
+                    "social_profiles": {},
+                    "last_avatar_sync_at": "2026-01-28T17:32:15Z"
+                  },
+                  "custom_attributes": {
+                    "waha_whatsapp_jid": "5545920029690@c.us",
+                    "waha_whatsapp_lid": "142125232574588@lid",
+                    "waha_whatsapp_chat_id": "142125232574588@lid"
+                  },
+                  "email": null,
+                  "id": 27746,
+                  "identifier": null,
+                  "name": "Eduardo Opção Telecom",
+                  "phone_number": "+5545920029690",
+                  "thumbnail": "https://chatwoot.opcaotelecom.net.br/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBOEFMQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--be67fe1439619d61a4de26c42371cea3d4dd3cf6/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--6d67cc85ee1ef5607c0fd1f48989b596f125a667/file.enc",
+                  "blocked": false,
+                  "type": "contact"
+                }
+              }
+            ],
+            "labels": [
+              "exporosa"
+            ],
+            "meta": {
+              "sender": {
+                "additional_attributes": {
+                  "city": "",
+                  "country": "",
+                  "description": "",
+                  "company_name": "",
+                  "country_code": "",
+                  "avatar_url_hash": "fff7601dff6da6fb082e043b8abc5c0b5f58041f088026e0f8272a13ea6aaa87",
+                  "social_profiles": {},
+                  "last_avatar_sync_at": "2026-01-28T17:32:15Z"
+                },
+                "custom_attributes": {
+                  "waha_whatsapp_jid": "5545920029690@c.us",
+                  "waha_whatsapp_lid": "142125232574588@lid",
+                  "waha_whatsapp_chat_id": "142125232574588@lid"
+                },
+                "email": null,
+                "id": 27746,
+                "identifier": null,
+                "name": "Eduardo Opção Telecom",
+                "phone_number": "+5545920029690",
+                "thumbnail": "https://chatwoot.opcaotelecom.net.br/rails/active_storage/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBOEFMQVE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--be67fe1439619d61a4de26c42371cea3d4dd3cf6/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdCem9MWm05eWJXRjBTU0lJYW5CbkJqb0dSVlE2RTNKbGMybDZaVjkwYjE5bWFXeHNXd2RwQWZvdyIsImV4cCI6bnVsbCwicHVyIjoidmFyaWF0aW9uIn19--6d67cc85ee1ef5607c0fd1f48989b596f125a667/file.enc",
+                "blocked": false,
+                "type": "contact"
+              },
+              "assignee": null,
+              "assignee_type": null,
+              "team": null,
+              "hmac_verified": false
+            },
+            "status": "pending",
+            "custom_attributes": {},
+            "snoozed_until": null,
+            "unread_count": 10,
+            "first_reply_created_at": "2026-04-23T17:05:10.920Z",
+            "priority": null,
+            "waiting_since": 1776968651,
+            "agent_last_seen_at": 1776964340,
+            "contact_last_seen_at": 1776968647,
+            "last_activity_at": 1776968651,
+            "timestamp": 1776968651,
+            "created_at": 1776963804,
+            "updated_at": 1776968651.600297,
+            "event": "automation_event.conversation_updated"
+          },
+          "webhookUrl": "https://n8n.opcaotelecom.net.br/webhook/webhook-expo",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook Entrada": {
+      "main": [
+        [
+          {
+            "node": "IF: mensagem do cliente?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IF: mensagem do cliente?": {
+      "main": [
+        [
+          {
+            "node": "get",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Estado": {
+      "main": [
+        [
+          {
+            "node": "update_nome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update cidade",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update provedor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update palpite",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get": {
+      "main": [
+        [
+          {
+            "node": "If_valida_lead_novo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "lead_novo": {
+      "main": [
+        [
+          {
+            "node": "pergunta_nome",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "pergunta_nome": {
+      "main": [
+        []
+      ]
+    },
+    "pergunta_cidade": {
+      "main": [
+        []
+      ]
+    },
+    "pergunta_provedor": {
+      "main": [
+        []
+      ]
+    },
+    "If_valida_lead_novo": {
+      "main": [
+        [
+          {
+            "node": "Switch Estado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "lead_novo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update_nome": {
+      "main": [
+        [
+          {
+            "node": "pergunta_cidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update cidade": {
+      "main": [
+        [
+          {
+            "node": "pergunta_provedor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update provedor": {
+      "main": [
+        [
+          {
+            "node": "pergunta_download",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update palpite": {
+      "main": [
+        [
+          {
+            "node": "finaliza",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "17f1674b-7596-47a3-9a8e-fdcb78a68ce5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d18dda3a218d7de250864134bd8bec82cdd0e8038ba5cf37464bba06d3f31cdb"
+  },
+  "id": "PKctCslCu4nmeYZm",
+  "tags": [
+    {
+      "updatedAt": "2026-04-13T12:43:50.858Z",
+      "createdAt": "2026-04-13T12:43:50.858Z",
+      "id": "kqi8sb5Y9rCiJFRT",
+      "name": "NOC"
+    }
+  ]
+}
